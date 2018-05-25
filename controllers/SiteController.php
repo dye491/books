@@ -2,8 +2,11 @@
 
 namespace app\controllers;
 
+use app\models\RegistrationForm;
+use app\models\User;
 use Yii;
 use yii\filters\AccessControl;
+use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
@@ -20,17 +23,17 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+                'only'  => ['logout'],
                 'rules' => [
                     [
                         'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
+                        'allow'   => true,
+                        'roles'   => ['@'],
                     ],
                 ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
+            'verbs'  => [
+                'class'   => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
                 ],
@@ -44,11 +47,11 @@ class SiteController extends Controller
     public function actions()
     {
         return [
-            'error' => [
+            'error'   => [
                 'class' => 'yii\web\ErrorAction',
             ],
             'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
+                'class'           => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
@@ -98,6 +101,42 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
+    public function actionRegister()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new RegistrationForm();
+        if ($model->load(Yii::$app->request->post())) {
+            if ($user = $model->register()) {
+                try {
+                    $email = \Yii::$app->mailer->compose()
+                        ->setTo($user->email)
+                        ->setFrom([Yii::$app->params['adminEmail'] => Yii::$app->name])
+                        ->setSubject('Подтверждение регистрации')
+                        ->setHtmlBody('Ссылка для подтверждения регистрации: ' . Html::a('Подтвердить',
+                                Yii::$app->urlManager->createAbsoluteUrl(
+                                    ['site/confirm', 'id' => $user->id, 'key' => $user->authKey]
+                                ))
+                        )
+                        ->send();
+
+                    if ($email) {
+                        Yii::$app->getSession()->setFlash('success', 'На ваш электронный адрес выслано письмо для подтверждения регистрации');
+                    }
+                } catch (\Exception $exception) {
+                    Yii::$app->getSession()->setFlash('warning', 'Ошибка регистрации. Попробуйте ещё раз или обратитесь в службу поддержки.');
+                    User::deleteAll(['id' => $user->id]);
+                }
+            }
+        }
+
+        return $this->render('register', [
+            'model' => $model,
+        ]);
+    }
+
     /**
      * Displays contact page.
      *
@@ -124,5 +163,24 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionConfirm($id, $key)
+    {
+        $user = User::find()->where([
+            'id'       => $id,
+            'authKey' => $key,
+            'status'   => 0,
+        ])->one();
+
+        if (!empty($user)) {
+            $user->status = User::STATUS_ACTIVE;
+            $user->save();
+            \Yii::$app->getSession()->setFlash('success', 'Вы успешно активировали ваш аккаунт');
+        } else {
+            \Yii::$app->getSession()->setFlash('warning', 'Ошибка подтверждения');
+        }
+
+        return $this->goHome();
     }
 }
