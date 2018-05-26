@@ -27,7 +27,7 @@ use yii\widgets\ActiveForm;
 
     <!--    --><? //= $form->field($model, 'desc') ?>
 
-    <div class="form-group" style="position: relative; top: -6px">
+    <div class="form-group" style="position: relative; top: -6px; left: 20px">
         <?= Html::submitButton('Найти', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('Сбросить фильтр', ['class' => 'btn btn-default']) ?>
     </div>
