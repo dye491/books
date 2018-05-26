@@ -4,16 +4,17 @@ $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
 $config = [
-    'id'         => 'books',
-    'name'       => 'Книговорот',
-    'language'   => 'ru',
-    'basePath'   => dirname(__DIR__),
-    'bootstrap'  => ['log'],
-    'aliases'    => [
+    'id'           => 'books',
+    'name'         => 'Книговорот',
+    'language'     => 'ru',
+    'defaultRoute' => 'point',
+    'basePath'     => dirname(__DIR__),
+    'bootstrap'    => ['log'],
+    'aliases'      => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
-    'components' => [
+    'components'   => [
         'request'      => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '_zw0uB51OGoFjiOFYFg2VwrLnN9r7kiQ',
@@ -52,7 +53,7 @@ $config = [
             ],
         ],
     ],
-    'params'     => $params,
+    'params'       => $params,
 ];
 
 if (YII_ENV_DEV) {
