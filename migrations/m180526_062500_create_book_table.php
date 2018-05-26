@@ -22,6 +22,7 @@ class m180526_062500_create_book_table extends Migration
             'user_id'   => $this->integer(),
             'status'    => $this->smallInteger()->defaultValue(0),
             'rating'    => $this->integer()->defaultValue(0),
+            'imagePath' => $this->string(),
         ]);
 
         $this->addForeignKey('fk_book_point_id', 'book', 'point_id', 'point', 'id', 'CASCADE');
