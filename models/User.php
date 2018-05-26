@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-//use Yii;
+use Yii;
 use yii\web\IdentityInterface;
 use yii\db\ActiveRecord;
 
@@ -17,6 +17,8 @@ use yii\db\ActiveRecord;
  * @property string $firstName
  * @property string $surname
  * @property int $status
+ *
+ * @property Book[] $books
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -138,16 +140,24 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function validatePassword($password)
     {
-        return \Yii::$app->getSecurity()->validatePassword($password, $this->passwordHash);
+        return Yii::$app->getSecurity()->validatePassword($password, $this->passwordHash);
     }
 
     public function setPassword($password)
     {
-        $this->passwordHash = \Yii::$app->getSecurity()->generatePasswordHash($password);
+        $this->passwordHash = Yii::$app->getSecurity()->generatePasswordHash($password);
     }
 
     public function generateAuthKey()
     {
-        $this->authKey = \Yii::$app->getSecurity()->generateRandomString();
+        $this->authKey = Yii::$app->getSecurity()->generateRandomString();
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBooks()
+    {
+        return $this->hasMany(Book::className(), ['user_id' => 'id']);
     }
 }
