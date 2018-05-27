@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $model app\models\Book */
 
 $this->title = 'Добавить книгу';
-$this->params['breadcrumbs'][] = ['label' => 'Books', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->point->title, 'url' => ['/point/view', 'id' => $model->point_id]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="book-create col-sm-6 col-sm-offset-3">
