@@ -34,18 +34,21 @@ class m180526_062500_create_book_table extends Migration
                 'author'    => 'В. Носов',
                 'issueYear' => 2000,
                 'point_id'  => $i,
+                'desc'      => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. A autem deleniti ea eaque, eos et eum exercitationem fugit modi molestiae nobis officiis provident quam repudiandae rerum saepe similique velit. Laudantium!',
             ]);
             $this->insert('book', [
                 'title'     => 'Денискины рассказы',
                 'author'    => 'Драгунский',
                 'issueYear' => 2005,
                 'point_id'  => $i,
+                'desc'      => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. A autem deleniti ea eaque, eos et eum exercitationem fugit modi molestiae nobis officiis provident quam repudiandae rerum saepe similique velit. Laudantium!',
             ]);
             $this->insert('book', [
                 'title'     => 'Война и мир',
                 'author'    => 'Л. Н. Толстой',
                 'issueYear' => 1956,
                 'point_id'  => $i,
+                'desc'      => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. A autem deleniti ea eaque, eos et eum exercitationem fugit modi molestiae nobis officiis provident quam repudiandae rerum saepe similique velit. Laudantium!',
             ]);
         }
     }

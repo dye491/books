@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Point;
 use app\models\PointSearch;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -21,7 +22,7 @@ class PointController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class'   => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -39,7 +40,7 @@ class PointController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
+            'searchModel'  => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -52,8 +53,17 @@ class PointController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $dataProvider = new ActiveDataProvider([
+            'query'      => $model->getBooks(),
+            'pagination' => [
+                'pageSize' => 2,
+            ],
+        ]);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model'        => $model/*$this->findModel($id)*/,
+            'dataProvider' => $dataProvider,
         ]);
     }
 

@@ -4,24 +4,22 @@ use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\PointSearch */
+/* @var $searchModel app\models\BookSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Точки обмена';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Books';
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="point-index">
+<div class="book-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php Pjax::begin(); ?>
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <!--<p>
-        <?/*= Html::a('Create Point', ['create'], ['class' => 'btn btn-success']) */?>
-    </p>-->
+    <p>
+        <?= Html::a('Create Book', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
 
-    <div class="panel panel-default" style="background-color:rgb(245,245,245);">
-        <div class="panel-body">
     <?= ListView::widget([
         'dataProvider' => $dataProvider,
         'itemOptions' => ['class' => 'item'],
@@ -29,7 +27,5 @@ $this->params['breadcrumbs'][] = $this->title;
             return Html::a(Html::encode($model->title), ['view', 'id' => $model->id]);
         }*/'_item',
     ]) ?>
-        </div>
-    </div>
     <?php Pjax::end(); ?>
 </div>

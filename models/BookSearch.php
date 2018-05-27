@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Point;
+use app\models\Book;
 
 /**
- * PointSearch represents the model behind the search form of `app\models\Point`.
+ * BookSearch represents the model behind the search form of `app\models\Book`.
  */
-class PointSearch extends Point
+class BookSearch extends Book
 {
     /**
      * {@inheritdoc}
@@ -18,8 +18,8 @@ class PointSearch extends Point
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['title', 'address', 'desc'], 'safe'],
+            [['id', 'issueYear', 'point_id', 'user_id', 'status', 'rating'], 'integer'],
+            [['title', 'author', 'desc', 'imagePath'], 'safe'],
         ];
     }
 
@@ -41,14 +41,14 @@ class PointSearch extends Point
      */
     public function search($params)
     {
-        $query = Point::find();
+        $query = Book::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query'      => $query,
             'pagination' => [
-                'pageSize' => 10,
+                'pageSize' => 2,
             ],
         ]);
 
@@ -62,12 +62,18 @@ class PointSearch extends Point
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
+            'id'        => $this->id,
+            'issueYear' => $this->issueYear,
+            'point_id'  => $this->point_id,
+            'user_id'   => $this->user_id,
+            'status'    => $this->status,
+            'rating'    => $this->rating,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'address', $this->address])
-            /*->andFilterWhere(['like', 'desc', $this->desc])*/;
+            ->andFilterWhere(['like', 'author', $this->author])
+            ->andFilterWhere(['like', 'desc', $this->desc])
+            ->andFilterWhere(['like', 'imagePath', $this->imagePath]);
 
         return $dataProvider;
     }
