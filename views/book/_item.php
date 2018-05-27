@@ -10,7 +10,7 @@ use yii\helpers\Html;
 
 ?>
 <div>
-    <img src="/favicon.ico" width="50px" height="50px" alt="no_image" style="float: left">
+    <img src="/image/get?path=<?= $model->imagePath ?>" width="50px" height="50px" alt="no_image" style="float: left">
     <?= Html::a(Html::encode($model->title), ['/book/view', 'id' => $model->id]) ?>
     <?= Html::tag('p', $model->desc) ?>
 </div>
