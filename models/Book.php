@@ -135,7 +135,7 @@ class Book extends \yii\db\ActiveRecord
         if ($this->validate()) {
             $uploadPath = Yii::getAlias('@app/upload/');
             $path = Yii::$app->user->id . '/' . (new \DateTime())->format('Y-m-d');
-            if (!file_exists($path)) mkdir($path, 0775, true);
+            if (!file_exists($uploadPath . $path)) mkdir($uploadPath . $path, 0775, true);
             $filePath = $path . '/' . $this->imageFile->baseName . '.' . $this->imageFile->extension;
             $this->imageFile->saveAs($uploadPath . $filePath);
             return $filePath;
